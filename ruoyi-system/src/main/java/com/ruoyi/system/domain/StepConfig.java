@@ -9,13 +9,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 小米步数配置对象 xm_step_config
  *
  * @author zhangjie
- * @date 2024-09-25
+ * @date 2024-09-26
  */
-public class XmStepConfig extends BaseEntity
+public class StepConfig extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** $column.columnComment */
+    /** id */
     private String id;
 
     /** 登陆用户名 */
@@ -34,8 +34,8 @@ public class XmStepConfig extends BaseEntity
     @Excel(name = "通知管道")
     private String noticeId;
 
-    /** 模式：累加，一次性 */
-    @Excel(name = "模式：累加，一次性")
+    /** 模式 */
+    @Excel(name = "模式")
     private String model;
 
     /** 定时表达式 */
@@ -46,8 +46,8 @@ public class XmStepConfig extends BaseEntity
     @Excel(name = "是否启用")
     private Long status;
 
-    /** 步数，支持范围- */
-    @Excel(name = "步数，支持范围-")
+    /** 步数 */
+    @Excel(name = "步数")
     private String stepCount;
 
     /** 步进 */

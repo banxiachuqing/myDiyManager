@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.XmStepConfigMapper">
+<mapper namespace="com.ruoyi.system.mapper.StepConfigMapper">
     
-    <resultMap type="XmStepConfig" id="XmStepConfigResult">
+    <resultMap type="StepConfig" id="StepConfigResult">
         <result property="id"    column="id"    />
         <result property="userName"    column="user_name"    />
         <result property="password"    column="password"    />
@@ -19,12 +19,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
-    <sql id="selectXmStepConfigVo">
+    <sql id="selectStepConfigVo">
         select id, user_name, password, notice, notice_id, model, cron, status, step_count, step, create_time, update_time from xm_step_config
     </sql>
 
-    <select id="selectXmStepConfigList" parameterType="XmStepConfig" resultMap="XmStepConfigResult">
-        <include refid="selectXmStepConfigVo"/>
+    <select id="selectStepConfigList" parameterType="StepConfig" resultMap="StepConfigResult">
+        <include refid="selectStepConfigVo"/>
         <where>  
             <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
             <if test="password != null  and password != ''"> and password = #{password}</if>
@@ -38,12 +38,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectXmStepConfigById" parameterType="String" resultMap="XmStepConfigResult">
-        <include refid="selectXmStepConfigVo"/>
+    <select id="selectStepConfigById" parameterType="String" resultMap="StepConfigResult">
+        <include refid="selectStepConfigVo"/>
         where id = #{id}
     </select>
 
-    <insert id="insertXmStepConfig" parameterType="XmStepConfig">
+    <insert id="insertStepConfig" parameterType="StepConfig">
         insert into xm_step_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
@@ -75,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateXmStepConfig" parameterType="XmStepConfig">
+    <update id="updateStepConfig" parameterType="StepConfig">
         update xm_step_config
         <trim prefix="SET" suffixOverrides=",">
             <if test="userName != null">user_name = #{userName},</if>
@@ -93,11 +93,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteXmStepConfigById" parameterType="String">
+    <delete id="deleteStepConfigById" parameterType="String">
         delete from xm_step_config where id = #{id}
     </delete>
 
-    <delete id="deleteXmStepConfigByIds" parameterType="String">
+    <delete id="deleteStepConfigByIds" parameterType="String">
         delete from xm_step_config where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}

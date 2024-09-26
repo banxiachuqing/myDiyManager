@@ -11,9 +11,9 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.system.domain.XmStepConfig;
+import com.ruoyi.system.domain.StepConfig;
 import com.ruoyi.system.domain.XmStepRunLog;
-import com.ruoyi.system.mapper.XmStepConfigMapper;
+import com.ruoyi.system.mapper.StepConfigMapper;
 import com.ruoyi.system.mapper.XmStepRunLogMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -36,7 +36,7 @@ public class MiMotionRunner {
     private StringRedisTemplate stringRedisTemplate;
 
     @Resource
-    private XmStepConfigMapper xmStepConfigMapper;
+    private StepConfigMapper StepConfigMapper;
 
     @Resource
     private XmStepRunLogMapper xmStepRunLogMapper;
@@ -51,12 +51,12 @@ public class MiMotionRunner {
     public void runStep(String key) {
 
         try {
-            XmStepConfig stepConfig;
+            StepConfig stepConfig;
             String configInfo = this.stringRedisTemplate.opsForValue().get(key);
             if (StringUtils.isBlank(configInfo)) {
-                stepConfig = this.xmStepConfigMapper.selectXmStepConfigById(key);
+                stepConfig = this.StepConfigMapper.selectStepConfigById(key);
             } else {
-                stepConfig = JSON.parseObject(configInfo, XmStepConfig.class);
+                stepConfig = JSON.parseObject(configInfo, StepConfig.class);
             }
 
             XmStepRunLog.XmStepRunLogBuilder builder = XmStepRunLog.builder()
