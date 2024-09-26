@@ -1,0 +1,168 @@
+{
+  "v": 6,
+  "slp": {
+    "st": startTime,
+    "ed": endTime,
+    "dp": 0,
+    "lt": 0,
+    "wk": 0,
+    "usrSt": -1440,
+    "usrEd": -1440,
+    "wc": 0,
+    "is": 0,
+    "lb": 0,
+    "to": 0,
+    "dt": 0,
+    "rhr": 0,
+    "ss": 0
+  },
+  "stp": {
+    "ttl": totalCount,
+    "dis": 10627,
+    "cal": 510,
+    "wk": 41,
+    "rn": 50,
+    "runDist": 7654,
+    "runCal": 397,
+    "stage": [
+      {
+        "start": 327,
+        "stop": 341,
+        "mode": 1,
+        "dis": 481,
+        "cal": 13,
+        "step": 680
+      },
+      {
+        "start": 342,
+        "stop": 367,
+        "mode": 3,
+        "dis": 2295,
+        "cal": 95,
+        "step": 2874
+      },
+      {
+        "start": 368,
+        "stop": 377,
+        "mode": 4,
+        "dis": 1592,
+        "cal": 88,
+        "step": 1664
+      },
+      {
+        "start": 378,
+        "stop": 386,
+        "mode": 3,
+        "dis": 1072,
+        "cal": 51,
+        "step": 1245
+      },
+      {
+        "start": 387,
+        "stop": 393,
+        "mode": 4,
+        "dis": 1036,
+        "cal": 57,
+        "step": 1124
+      },
+      {
+        "start": 394,
+        "stop": 398,
+        "mode": 3,
+        "dis": 488,
+        "cal": 19,
+        "step": 607
+      },
+      {
+        "start": 399,
+        "stop": 414,
+        "mode": 4,
+        "dis": 2220,
+        "cal": 120,
+        "step": 2371
+      },
+      {
+        "start": 415,
+        "stop": 427,
+        "mode": 3,
+        "dis": 1268,
+        "cal": 59,
+        "step": 1489
+      },
+      {
+        "start": 428,
+        "stop": 433,
+        "mode": 1,
+        "dis": 152,
+        "cal": 4,
+        "step": 238
+      },
+      {
+        "start": 434,
+        "stop": 444,
+        "mode": 3,
+        "dis": 2295,
+        "cal": 95,
+        "step": 2874
+      },
+      {
+        "start": 445,
+        "stop": 455,
+        "mode": 4,
+        "dis": 1592,
+        "cal": 88,
+        "step": 1664
+      },
+      {
+        "start": 456,
+        "stop": 466,
+        "mode": 3,
+        "dis": 1072,
+        "cal": 51,
+        "step": 1245
+      },
+      {
+        "start": 467,
+        "stop": 477,
+        "mode": 4,
+        "dis": 1036,
+        "cal": 57,
+        "step": 1124
+      },
+      {
+        "start": 478,
+        "stop": 488,
+        "mode": 3,
+        "dis": 488,
+        "cal": 19,
+        "step": 607
+      },
+      {
+        "start": 489,
+        "stop": 499,
+        "mode": 4,
+        "dis": 2220,
+        "cal": 120,
+        "step": 2371
+      },
+      {
+        "start": 500,
+        "stop": 511,
+        "mode": 3,
+        "dis": 1268,
+        "cal": 59,
+        "step": 1489
+      },
+      {
+        "start": 512,
+        "stop": 522,
+        "mode": 1,
+        "dis": 152,
+        "cal": 4,
+        "step": 238
+      }
+    ]
+  },
+  "goal": 15000,
+  "tz": "28800"
+}

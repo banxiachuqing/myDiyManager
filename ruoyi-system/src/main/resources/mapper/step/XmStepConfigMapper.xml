@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.XmStepConfigMapper">
+    
+    <resultMap type="XmStepConfig" id="XmStepConfigResult">
+        <result property="id"    column="id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="password"    column="password"    />
+        <result property="notice"    column="notice"    />
+        <result property="noticeId"    column="notice_id"    />
+        <result property="model"    column="model"    />
+        <result property="cron"    column="cron"    />
+        <result property="status"    column="status"    />
+        <result property="stepCount"    column="step_count"    />
+        <result property="step"    column="step"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectXmStepConfigVo">
+        select id, user_name, password, notice, notice_id, model, cron, status, step_count, step, create_time, update_time from xm_step_config
+    </sql>
+
+    <select id="selectXmStepConfigList" parameterType="XmStepConfig" resultMap="XmStepConfigResult">
+        <include refid="selectXmStepConfigVo"/>
+        <where>  
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="notice != null "> and notice = #{notice}</if>
+            <if test="noticeId != null  and noticeId != ''"> and notice_id = #{noticeId}</if>
+            <if test="model != null  and model != ''"> and model = #{model}</if>
+            <if test="cron != null  and cron != ''"> and cron = #{cron}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="stepCount != null  and stepCount != ''"> and step_count = #{stepCount}</if>
+            <if test="step != null  and step != ''"> and step = #{step}</if>
+        </where>
+    </select>
+    
+    <select id="selectXmStepConfigById" parameterType="String" resultMap="XmStepConfigResult">
+        <include refid="selectXmStepConfigVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertXmStepConfig" parameterType="XmStepConfig">
+        insert into xm_step_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="password != null">password,</if>
+            <if test="notice != null">notice,</if>
+            <if test="noticeId != null">notice_id,</if>
+            <if test="model != null">model,</if>
+            <if test="cron != null">cron,</if>
+            <if test="status != null">status,</if>
+            <if test="stepCount != null">step_count,</if>
+            <if test="step != null">step,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="password != null">#{password},</if>
+            <if test="notice != null">#{notice},</if>
+            <if test="noticeId != null">#{noticeId},</if>
+            <if test="model != null">#{model},</if>
+            <if test="cron != null">#{cron},</if>
+            <if test="status != null">#{status},</if>
+            <if test="stepCount != null">#{stepCount},</if>
+            <if test="step != null">#{step},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXmStepConfig" parameterType="XmStepConfig">
+        update xm_step_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="notice != null">notice = #{notice},</if>
+            <if test="noticeId != null">notice_id = #{noticeId},</if>
+            <if test="model != null">model = #{model},</if>
+            <if test="cron != null">cron = #{cron},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="stepCount != null">step_count = #{stepCount},</if>
+            <if test="step != null">step = #{step},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXmStepConfigById" parameterType="String">
+        delete from xm_step_config where id = #{id}
+    </delete>
+
+    <delete id="deleteXmStepConfigByIds" parameterType="String">
+        delete from xm_step_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

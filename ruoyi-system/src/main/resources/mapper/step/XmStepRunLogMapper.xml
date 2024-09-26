@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.XmStepRunLogMapper">
+
+    <resultMap type="XmStepRunLog" id="XmStepRunLogResult">
+        <result property="id"    column="id"    />
+        <result property="configId"    column="config_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="userTokenResult"    column="user_token_result"    />
+        <result property="loginResult"    column="login_result"    />
+        <result property="appTokenResult"    column="app_token_result"    />
+        <result property="stepResult"    column="step_result"    />
+        <result property="stepCount"    column="step_count"    />
+    </resultMap>
+
+    <sql id="selectXmStepRunLogVo">
+        select id, config_id, user_name, create_time, user_token_result, login_result, app_token_result, step_result, step_count from xm_step_run_log
+    </sql>
+
+    <select id="selectXmStepRunLogList" parameterType="XmStepRunLog" resultMap="XmStepRunLogResult">
+        <include refid="selectXmStepRunLogVo"/>
+        <where>
+            <if test="configId != null  and configId != ''"> and config_id = #{configId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userTokenResult != null  and userTokenResult != ''"> and user_token_result = #{userTokenResult}</if>
+            <if test="loginResult != null  and loginResult != ''"> and login_result = #{loginResult}</if>
+            <if test="appTokenResult != null  and appTokenResult != ''"> and app_token_result = #{appTokenResult}</if>
+            <if test="stepResult != null  and stepResult != ''"> and step_result = #{stepResult}</if>
+            <if test="stepCount != null "> and step_count = #{stepCount}</if>
+        </where>
+    </select>
+
+    <select id="selectXmStepRunLogById" parameterType="Long" resultMap="XmStepRunLogResult">
+        <include refid="selectXmStepRunLogVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectByConfigId" resultMap="XmStepRunLogResult">
+        select *
+        from xm_step_run_log
+        where config_id = #{configId}
+        limit #{limit}
+    </select>
+
+    <insert id="insertXmStepRunLog" parameterType="XmStepRunLog" useGeneratedKeys="true" keyProperty="id">
+        insert into xm_step_run_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="configId != null">config_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="userTokenResult != null">user_token_result,</if>
+            <if test="loginResult != null">login_result,</if>
+            <if test="appTokenResult != null">app_token_result,</if>
+            <if test="stepResult != null">step_result,</if>
+            <if test="stepCount != null">step_count,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="configId != null">#{configId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="userTokenResult != null">#{userTokenResult},</if>
+            <if test="loginResult != null">#{loginResult},</if>
+            <if test="appTokenResult != null">#{appTokenResult},</if>
+            <if test="stepResult != null">#{stepResult},</if>
+            <if test="stepCount != null">#{stepCount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateXmStepRunLog" parameterType="XmStepRunLog">
+        update xm_step_run_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="configId != null">config_id = #{configId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="userTokenResult != null">user_token_result = #{userTokenResult},</if>
+            <if test="loginResult != null">login_result = #{loginResult},</if>
+            <if test="appTokenResult != null">app_token_result = #{appTokenResult},</if>
+            <if test="stepResult != null">step_result = #{stepResult},</if>
+            <if test="stepCount != null">step_count = #{stepCount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteXmStepRunLogById" parameterType="Long">
+        delete from xm_step_run_log where id = #{id}
+    </delete>
+
+    <delete id="deleteXmStepRunLogByIds" parameterType="String">
+        delete from xm_step_run_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

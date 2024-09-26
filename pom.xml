@@ -25,7 +25,6 @@
         <swagger.version>3.0.0</swagger.version>
         <kaptcha.version>2.3.3</kaptcha.version>
         <pagehelper.boot.version>1.4.7</pagehelper.boot.version>
-        <fastjson.version>2.0.43</fastjson.version>
         <oshi.version>6.6.3</oshi.version>
         <commons.io.version>2.13.0</commons.io.version>
         <poi.version>4.1.2</poi.version>
@@ -33,6 +32,7 @@
         <jwt.version>0.9.1</jwt.version>
         <flyway.version>5.2.4</flyway.version>
         <hutool.version>5.8.26</hutool.version>
+        <fastjson.version>2.0.52</fastjson.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -195,6 +195,13 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.34</version>
+                <scope>provided</scope>
             </dependency>
 
         </dependencies>
