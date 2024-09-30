@@ -37,10 +37,10 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="配置ID" align="center" prop="configId" />
       <el-table-column label="用户名" align="center" prop="userName" />
-      <el-table-column label="获取用户token" align="center" prop="userTokenResult" />
-      <el-table-column label="登录结果" align="center" prop="loginResult" />
-      <el-table-column label="获取token结果" align="center" prop="appTokenResult" />
-      <el-table-column label="刷步数结果" align="center" prop="stepResult" />
+      <el-table-column label="获取用户token" align="center" prop="userTokenResult" show-overflow-tooltip />
+      <el-table-column label="登录结果" align="center" prop="loginResult" show-overflow-tooltip />
+      <el-table-column label="获取token结果" align="center" prop="appTokenResult" show-overflow-tooltip />
+      <el-table-column label="刷步数结果" align="center" prop="stepResult" show-overflow-tooltip />
       <el-table-column label="刷入步数" align="center" prop="stepCount" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">

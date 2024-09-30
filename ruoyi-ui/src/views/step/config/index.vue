@@ -149,7 +149,12 @@
       <el-table-column label="定时表达式" align="center" prop="cron"/>
       <el-table-column label="是否启用" align="center" prop="status">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
+          <el-switch
+            v-model="scope.row.status"
+            active-value="0"
+            inactive-value="1"
+            @change="handleStatusChange(scope.row)"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="步数" align="center" prop="stepCount"/>
@@ -237,7 +242,7 @@
             <el-radio
               v-for="dict in dict.type.sys_normal_disable"
               :key="dict.value"
-              :label="parseInt(dict.value)"
+              :label="dict.value"
             >{{ dict.label }}
             </el-radio>
           </el-radio-group>
@@ -260,7 +265,7 @@
 </template>
 
 <script>
-import {addConfig, delConfig, getConfig, listConfig, updateConfig} from "@/api/step/config";
+import {addConfig, delConfig, getConfig, listConfig, updateConfig,changeConfigStatus} from "@/api/step/config";
 import Crontab from "@/components/Crontab/index.vue";
 
 export default {
@@ -405,6 +410,15 @@ export default {
         this.title = "修改小米步数配置";
       });
     },
+    // 任务状态修改
+    handleStatusChange(row) {
+
+       changeConfigStatus(row.id, row.status).then(() => {
+        this.$modal.msgSuccess( "成功");
+      }).catch(function() {
+        row.status = row.status === "0" ? "1" : "0";
+      });
+    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -412,6 +426,8 @@ export default {
           var arr = this.form.noticeId
           if (Array.isArray(arr) && arr.length > 0) {
             this.form.noticeId = arr.join(',');
+          }else{
+            this.form.noticeId=''
           }
 
           if (this.form.id != null) {

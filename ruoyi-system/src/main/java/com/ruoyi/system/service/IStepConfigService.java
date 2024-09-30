@@ -61,4 +61,6 @@ public interface IStepConfigService
      * @return 结果
      */
     public int deleteStepConfigById(String id);
+
+    int changeStatus(StepConfig stepConfig);
 }

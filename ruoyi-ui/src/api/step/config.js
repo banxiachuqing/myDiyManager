@@ -35,6 +35,19 @@ export function updateConfig(data) {
   })
 }
 
+// 任务状态修改
+export function changeConfigStatus(id, status) {
+  const data = {
+    id,
+    status
+  }
+  return request({
+    url: '/step/config/changeStatus',
+    method: 'put',
+    data: data
+  })
+}
+
 // 删除小米步数配置
 export function delConfig(id) {
   return request({

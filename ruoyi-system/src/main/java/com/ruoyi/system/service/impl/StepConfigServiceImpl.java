@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -154,5 +155,25 @@ public class StepConfigServiceImpl implements IStepConfigService {
             throw new RuntimeException(e);
         }
         return stepConfigMapper.deleteStepConfigById(id);
+    }
+
+    @Override
+    public int changeStatus(StepConfig stepConfig) {
+        StepConfig oldConfig = this.stepConfigMapper.selectStepConfigById(stepConfig.getId());
+        oldConfig.setStatus(stepConfig.getStatus());
+        oldConfig.setUpdateTime(new Date());
+
+
+        try {
+            SysJob sysJob = this.sysJobService.selectJobById(Long.valueOf(stepConfig.getId()));
+            sysJob.setStatus(stepConfig.getStatus() + "");
+            this.sysJobService.updateJob(sysJob);
+        } catch (Exception e) {
+            log.error("更新失败", e);
+            throw new BaseException("通知定时任务失败");
+        }
+        this.stringRedisTemplate.opsForHash().put("xm-step-config", stepConfig.getId(), JSON.toJSONString(oldConfig));
+        return stepConfigMapper.updateStepConfig(oldConfig);
+
     }
 }

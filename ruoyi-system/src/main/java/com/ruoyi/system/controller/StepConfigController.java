@@ -83,6 +83,17 @@ public class StepConfigController extends BaseController {
         return toAjax(stepConfigService.updateStepConfig(stepConfig));
     }
 
+
+    /**
+     * 更改任务状态
+     */
+    @PreAuthorize("@ss.hasPermi('step:config:edit')")
+    @Log(title = "小米步数任务状态变更", businessType = BusinessType.UPDATE)
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody StepConfig stepConfig) {
+        return toAjax(stepConfigService.changeStatus(stepConfig));
+    }
+
     /**
      * 删除小米步数配置
      */
