@@ -189,6 +189,7 @@ public class MiMotionRunner {
                                     .builder()
                                     .title("小米步数任务通知")
                                     .body("步数刷入" + (flag ? "成功✌\uD83C\uDFFB" : "失败\uD83D\uDE1E") + "\n" +
+                                            "用户:"+ stepConfig.getUserName() + "\n" +
                                             "当前步数:" + stepCount)
                                     .build())).execute();
                 } catch (Exception e) {
