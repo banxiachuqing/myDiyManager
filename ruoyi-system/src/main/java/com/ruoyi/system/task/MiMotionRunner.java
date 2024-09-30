@@ -129,7 +129,7 @@ public class MiMotionRunner {
                 if (CollectionUtils.isEmpty(logs)) {
                     stepCount = range.length > 1 ? RandomUtil.randomInt(Integer.parseInt(range[0]), Integer.parseInt(range[1])) : Integer.parseInt(stepConfig.getStepCount());
                 } else {
-                    stepCount = logs.get(0).getStepCount() + range.length > 1 ? RandomUtil.randomInt(Integer.parseInt(range[0]), Integer.parseInt(range[1])) : Integer.parseInt(stepConfig.getStepCount());
+                    stepCount = logs.get(0).getStepCount() + (range.length > 1 ? RandomUtil.randomInt(Integer.parseInt(range[0]), Integer.parseInt(range[1])) : Integer.parseInt(stepConfig.getStepCount()));
                 }
             } else {
                 stepCount = range.length > 1 ? RandomUtil.randomInt(Integer.parseInt(range[0]), Integer.parseInt(range[1])) : Integer.parseInt(stepConfig.getStepCount());
@@ -196,7 +196,9 @@ public class MiMotionRunner {
                 }
             }
         }
-        this.xmStepRunLogMapper.insertXmStepRunLog(builder.build());
+        XmStepRunLog build = builder.build();
+        build.setCreateTime(new Date());
+        this.xmStepRunLogMapper.insertXmStepRunLog(build);
 
     }
 

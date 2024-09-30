@@ -42,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select *
         from xm_step_run_log
         where config_id = #{configId}
+        order by create_time desc
         limit #{limit}
     </select>
 
