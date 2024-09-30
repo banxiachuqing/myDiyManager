@@ -86,7 +86,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['step:config:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -97,7 +98,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['step:config:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -108,7 +110,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['step:config:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -118,34 +121,38 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['step:config:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="登陆用户名" align="center" prop="userName" />
-      <el-table-column label="登录密码" align="center" prop="password" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="登陆用户名" align="center" prop="userName"/>
+      <el-table-column label="登录密码" align="center" prop="password"/>
       <el-table-column label="是否通知" align="center" prop="notice">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.notice"/>
         </template>
       </el-table-column>
-      <el-table-column label="通知管道" align="center" prop="noticeId" />
+      <el-table-column label="通知管道" align="center" prop="noticeId">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.xm_step_notice" :value="scope.row.noticeId"/>
+        </template>
+      </el-table-column>
       <el-table-column label="模式" align="center" prop="model">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.xm_step_model" :value="scope.row.model"/>
         </template>
       </el-table-column>
-      <el-table-column label="定时表达式" align="center" prop="cron" />
+      <el-table-column label="定时表达式" align="center" prop="cron"/>
       <el-table-column label="是否启用" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="步数" align="center" prop="stepCount" />
-      <el-table-column label="步进" align="center" prop="step" />
+      <el-table-column label="步数" align="center" prop="stepCount"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -154,14 +161,16 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['step:config:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['step:config:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -176,12 +185,12 @@
 
     <!-- 添加或修改小米步数配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="登陆用户名" prop="userName">
-          <el-input v-model="form.userName" placeholder="请输入登陆用户名" />
+          <el-input v-model="form.userName" placeholder="请输入登陆用户名(仅支持邮箱登录)"/>
         </el-form-item>
         <el-form-item label="登录密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入登录密码" />
+          <el-input v-model="form.password" placeholder="请输入登录密码"/>
         </el-form-item>
         <el-form-item label="是否通知" prop="notice">
           <el-radio-group v-model="form.notice">
@@ -189,11 +198,19 @@
               v-for="dict in dict.type.sys_normal_disable"
               :key="dict.value"
               :label="parseInt(dict.value)"
-            >{{dict.label}}</el-radio>
+            >{{ dict.label }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="通知管道" prop="noticeId">
-          <el-input v-model="form.noticeId" type="textarea" placeholder="请输入内容" />
+          <el-select v-model="form.noticeId" multiple placeholder="请选择通知管道">
+            <el-option
+              v-for="dict in dict.type.xm_step_notice"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="模式" prop="model">
           <el-radio-group v-model="form.model">
@@ -201,11 +218,19 @@
               v-for="dict in dict.type.xm_step_model"
               :key="dict.value"
               :label="dict.value"
-            >{{dict.label}}</el-radio>
+            >{{ dict.label }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="定时表达式" prop="cron">
-          <el-input v-model="form.cron" placeholder="请输入定时表达式" />
+          <el-input v-model="form.cron" placeholder="请输入定时表达式">
+            <template slot="append">
+              <el-button type="primary" @click="handleShowCron">
+                生成表达式
+                <i class="el-icon-time el-icon--right"></i>
+              </el-button>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item label="是否启用" prop="status">
           <el-radio-group v-model="form.status">
@@ -213,14 +238,12 @@
               v-for="dict in dict.type.sys_normal_disable"
               :key="dict.value"
               :label="parseInt(dict.value)"
-            >{{dict.label}}</el-radio>
+            >{{ dict.label }}
+            </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="步数" prop="stepCount">
-          <el-input v-model="form.stepCount" placeholder="请输入步数" />
-        </el-form-item>
-        <el-form-item label="步进" prop="step">
-          <el-input v-model="form.step" placeholder="请输入步进" />
+          <el-input v-model="form.stepCount" placeholder="请输入步数"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -228,15 +251,22 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="Cron表达式生成器" :visible.sync="openCron" append-to-body destroy-on-close class="scrollbar">
+      <crontab @hide="openCron=false" @fill="crontabFill" :expression="expression"></crontab>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import {addConfig, delConfig, getConfig, listConfig, updateConfig} from "@/api/step/config";
+import Crontab from "@/components/Crontab/index.vue";
 
 export default {
   name: "Config",
-  dicts: ['xm_step_model', 'sys_normal_disable'],
+  components: {Crontab},
+  dicts: ['xm_step_model', 'sys_normal_disable', 'xm_step_notice'],
   data() {
     return {
       // 遮罩层
@@ -257,6 +287,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      openCron: false,
+      expression: "",
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -275,6 +307,27 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        userName: [
+          {required: true, message: "登录用户名不能为空", trigger: "blur"}
+        ],
+        password: [
+          {required: true, message: "登陆密码不能为空", trigger: "blur"}
+        ],
+        notice: [
+          {required: true, message: "必选通知", trigger: "blur"}
+        ],
+        model: [
+          {required: true, message: "必选模式", trigger: "blur"}
+        ],
+        cron: [
+          {required: true, message: "定时任务表达式不能为空", trigger: "blur"}
+        ],
+        stepCount: [
+          {required: true, message: "步数不能为空", trigger: "blur"}
+        ],
+        status: [
+          {required: true, message: "必选状态", trigger: "blur"}
+        ]
       }
     };
   },
@@ -319,6 +372,11 @@ export default {
       this.queryParams.pageNum = 1;
       this.getList();
     },
+    /** cron表达式按钮操作 */
+    handleShowCron() {
+      this.expression = this.form.cron;
+      this.openCron = true;
+    },
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
@@ -327,7 +385,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -342,6 +400,7 @@ export default {
       const id = row.id || this.ids
       getConfig(id).then(response => {
         this.form = response.data;
+        this.form.noticeId=response.data.noticeId?response.data.noticeId.split(","):[];
         this.open = true;
         this.title = "修改小米步数配置";
       });
@@ -350,6 +409,11 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          var arr = this.form.noticeId
+          if (Array.isArray(arr) && arr.length > 0) {
+            this.form.noticeId = arr.join(',');
+          }
+
           if (this.form.id != null) {
             updateConfig(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
@@ -369,12 +433,17 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除小米步数配置编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除小米步数配置编号为"' + ids + '"的数据项？').then(function () {
         return delConfig(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
+    },
+    /** 确定后回传值 */
+    crontabFill(value) {
+      this.form.cron = value;
     },
     /** 导出按钮操作 */
     handleExport() {

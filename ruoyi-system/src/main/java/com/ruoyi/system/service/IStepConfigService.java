@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
+import com.ruoyi.common.exception.job.TaskException;
 import com.ruoyi.system.domain.StepConfig;
+import org.quartz.SchedulerException;
 
 import java.util.List;
 
@@ -34,7 +36,7 @@ public interface IStepConfigService
      * @param stepConfig 小米步数配置
      * @return 结果
      */
-    public int insertStepConfig(StepConfig stepConfig);
+    public int insertStepConfig(StepConfig stepConfig) throws SchedulerException, TaskException;
 
     /**
      * 修改小米步数配置

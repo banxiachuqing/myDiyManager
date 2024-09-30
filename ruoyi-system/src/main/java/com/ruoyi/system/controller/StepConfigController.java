@@ -17,14 +17,12 @@ import java.util.List;
 
 /**
  * 小米步数配置Controller
- *
  * @author zhangjie
  * @date 2024-09-26
  */
 @RestController
 @RequestMapping("/step/config")
-public class StepConfigController extends BaseController
-{
+public class StepConfigController extends BaseController {
     @Autowired
     private IStepConfigService stepConfigService;
 
@@ -33,8 +31,7 @@ public class StepConfigController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('step:config:list')")
     @GetMapping("/list")
-    public TableDataInfo list(StepConfig stepConfig)
-    {
+    public TableDataInfo list(StepConfig stepConfig) {
         startPage();
         List<StepConfig> list = stepConfigService.selectStepConfigList(stepConfig);
         return getDataTable(list);
@@ -46,8 +43,7 @@ public class StepConfigController extends BaseController
     @PreAuthorize("@ss.hasPermi('step:config:export')")
     @Log(title = "小米步数配置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, StepConfig stepConfig)
-    {
+    public void export(HttpServletResponse response, StepConfig stepConfig) {
         List<StepConfig> list = stepConfigService.selectStepConfigList(stepConfig);
         ExcelUtil<StepConfig> util = new ExcelUtil<StepConfig>(StepConfig.class);
         util.exportExcel(response, list, "小米步数配置数据");
@@ -58,8 +54,7 @@ public class StepConfigController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('step:config:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") String id) {
         return success(stepConfigService.selectStepConfigById(id));
     }
 
@@ -69,9 +64,13 @@ public class StepConfigController extends BaseController
     @PreAuthorize("@ss.hasPermi('step:config:add')")
     @Log(title = "小米步数配置", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody StepConfig stepConfig)
-    {
-        return toAjax(stepConfigService.insertStepConfig(stepConfig));
+    public AjaxResult add(@RequestBody StepConfig stepConfig) {
+        try {
+            return toAjax(stepConfigService.insertStepConfig(stepConfig));
+        } catch (Exception e) {
+            logger.error("新增失败", e);
+        }
+        return toAjax(false);
     }
 
     /**
@@ -80,8 +79,7 @@ public class StepConfigController extends BaseController
     @PreAuthorize("@ss.hasPermi('step:config:edit')")
     @Log(title = "小米步数配置", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody StepConfig stepConfig)
-    {
+    public AjaxResult edit(@RequestBody StepConfig stepConfig) {
         return toAjax(stepConfigService.updateStepConfig(stepConfig));
     }
 
@@ -90,9 +88,8 @@ public class StepConfigController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('step:config:remove')")
     @Log(title = "小米步数配置", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable String[] ids) {
         return toAjax(stepConfigService.deleteStepConfigByIds(ids));
     }
 }
