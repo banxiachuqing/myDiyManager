@@ -31,6 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="stepResult != null  and stepResult != ''"> and step_result = #{stepResult}</if>
             <if test="stepCount != null "> and step_count = #{stepCount}</if>
         </where>
+        order by create_time desc
     </select>
 
     <select id="selectXmStepRunLogById" parameterType="Long" resultMap="XmStepRunLogResult">

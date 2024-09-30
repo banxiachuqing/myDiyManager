@@ -207,7 +207,7 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="通知管道" prop="noticeId">
+        <el-form-item label="通知管道" prop="noticeId" v-if="form.notice === 0" >
           <el-select v-model="form.noticeId" multiple placeholder="请选择通知管道">
             <el-option
               v-for="dict in dict.type.xm_step_notice"

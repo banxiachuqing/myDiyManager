@@ -40,8 +40,15 @@
       <el-table-column label="获取用户token" align="center" prop="userTokenResult" show-overflow-tooltip />
       <el-table-column label="登录结果" align="center" prop="loginResult" show-overflow-tooltip />
       <el-table-column label="获取token结果" align="center" prop="appTokenResult" show-overflow-tooltip />
-      <el-table-column label="刷步数结果" align="center" prop="stepResult" show-overflow-tooltip />
+      <el-table-column label="刷步数结果" align="center" prop="stepResult" show-overflow-tooltip >
+        <template slot-scope="scope">
+          <el-tag :type="parseStepResult(scope.row.stepResult)">
+            {{parseStepResult(scope.row.stepResult)=='success'?'成功':'失败'}}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="刷入步数" align="center" prop="stepCount" />
+      <el-table-column label="时间" align="center" prop="createTime" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -241,6 +248,19 @@ export default {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    parseStepResult(stepResult) {
+      if (!stepResult) {
+        return "danger"
+      }
+
+      try {
+        const result = JSON.parse(stepResult);
+        return result.code===1?"success":"danger";
+      } catch (error) {
+        console.error('解析 JSON 字符串失败:', error);
+        return "danger";
+      }
     },
     /** 导出按钮操作 */
     handleExport() {
