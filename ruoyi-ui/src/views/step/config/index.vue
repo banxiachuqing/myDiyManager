@@ -252,7 +252,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm" :loading="subLoading">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -276,6 +276,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      subLoading: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -423,6 +424,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+
           var arr = this.form.noticeId
           if (Array.isArray(arr) && arr.length > 0) {
             this.form.noticeId = arr.join(',');
@@ -430,15 +432,18 @@ export default {
             this.form.noticeId=''
           }
 
+          this.subLoading=true;
           if (this.form.id != null) {
             updateConfig(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
+              this.subLoading=false;
               this.open = false;
               this.getList();
             });
           } else {
             addConfig(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
+              this.subLoading=false;
               this.open = false;
               this.getList();
             });

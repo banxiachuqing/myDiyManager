@@ -93,7 +93,7 @@ public class StepConfigServiceImpl implements IStepConfigService {
 
         this.stringRedisTemplate.opsForHash().put("xm-step-config", stepConfig.getId(), JSON.toJSONString(stepConfig));
 
-        if (stepConfig.getStatus().equals(0L)) {
+        if (stepConfig.getStatus().equals("0")) {
             sysJob.setStatus("0");
             this.sysJobService.changeStatus(sysJob);
         }

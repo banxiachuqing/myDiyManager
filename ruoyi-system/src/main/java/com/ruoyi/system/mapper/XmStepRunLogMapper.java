@@ -61,5 +61,12 @@ public interface XmStepRunLogMapper
      */
     public int deleteXmStepRunLogByIds(Long[] ids);
 
+
+    /**
+     * 返回今天的所有数据
+     *
+     * @param configId 用户id
+     * @return 结果
+     */
     List<XmStepRunLog> selectByConfigId(@Param("configId") String configId, @Param("limit") int limit);
 }

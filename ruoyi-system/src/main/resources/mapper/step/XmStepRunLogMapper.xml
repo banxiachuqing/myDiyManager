@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectByConfigId" resultMap="XmStepRunLogResult">
         select *
         from xm_step_run_log
-        where config_id = #{configId}
+        where config_id = #{configId} and date(create_time)=CURDATE()
         order by create_time desc
         limit #{limit}
     </select>
