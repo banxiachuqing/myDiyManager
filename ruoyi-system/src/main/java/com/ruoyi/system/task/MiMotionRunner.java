@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.resource.ClassPathResource;
 import cn.hutool.core.net.url.UrlBuilder;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.Mode;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -56,6 +58,11 @@ public class MiMotionRunner {
     );
 
     public void runStep(String key) {
+
+        //错开时间，方式人机监测
+        ThreadUtil.sleep(RandomUtil.randomInt(5,60), TimeUnit.SECONDS);
+
+
         StepConfig stepConfig;
         int stepCount = 0;
         boolean flag = true;
