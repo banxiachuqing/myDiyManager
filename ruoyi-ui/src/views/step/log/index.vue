@@ -256,7 +256,7 @@ export default {
 
       try {
         const result = JSON.parse(stepResult);
-        return result.code===1?"success":"danger";
+        return result.code===200?"success":"danger";
       } catch (error) {
         console.error('解析 JSON 字符串失败:', error);
         return "danger";
