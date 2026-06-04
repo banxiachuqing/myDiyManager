@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Before editing/creating code, query the local codegraph index first.** A live SQLite knowledge graph lives at `.codegraph/codegraph.db` (~480 files, 7.4K nodes, 15K edges, updates within ~1s of file writes). Use it for "where is X", "what calls Y", "what would break if I change Z", "show me the dependency graph" — it's much faster and more accurate than `grep` + `read` loops. MCP tools: `mcp__codegraph__codegraph_{explore,search,nodes,files,callers,callees,impact,status}`. Raw SQL fallback: `sqlite3 .codegraph/codegraph/db ".tables"`.
+
 ## 项目身份
 
 **RuoYi-Vue 3.8.8** — 基于 SpringBoot + Vue 的后台管理系统框架（fork 自 [y_project/RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue)）。本仓库是用户在原框架基础上的**业务定制版（myDiyManager）**。
@@ -35,6 +37,12 @@ myDiyManager/                      ← 根 pom, 统一依赖版本
 **调用链**: Controller (`ruoyi-admin/web/controller/`) → Service (`ruoyi-system/service/`) → Mapper (`ruoyi-system/mapper/`) → MyBatis XML (`resources/mapper/**/*Mapper.xml`)
 
 ## 关键约定（不是从单文件能看出来的）
+
+**Top-引用核心类**（codegraph 数据，**改这些前要格外小心**）：
+- `com.ruoyi.common.core.domain.AjaxResult` — 全项目 179 处引用，几乎所有 Controller 返回值
+- `com.ruoyi.common.core.domain.entity.{SysUser, SysMenu, SysRole, SysDept, SysConfig}` — RBAC + 业务核心实体
+- `com.ruoyi.common.utils.StringUtils` — 字符串/判空/转换工具，被 74 个类引用
+- Mapper **不**用 `@Mapper` 接口（codegraph 统计 0 个 `@Mapper` 节点），全部走 XML `classpath*:mapper/**/*Mapper.xml`
 
 1. **Mapper XML 扫描路径固定**：`classpath*:mapper/**/*Mapper.xml`（application-dev.yml），与代码里 Mapper 接口在同包。`@Mapper` 注解不是必须。
 2. **权限检查用自定义 SpEL**：必须写 `@PreAuthorize("@ss.hasPermi('system:user:list')"`，**不是** `hasAuthority('xxx')`——后者查 Spring Security 内置 authorities，不查 RuoYi 菜单权限表。
