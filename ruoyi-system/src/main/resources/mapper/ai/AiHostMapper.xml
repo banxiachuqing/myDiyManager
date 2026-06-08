@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.ai.mapper.AiHostMapper">
+  <resultMap id="BaseResult" type="com.ruoyi.system.ai.domain.AiHost">
+    <id     property="hostId"            column="host_id"/>
+    <result property="hostName"          column="host_name"/>
+    <result property="ip"                column="ip"/>
+    <result property="sshPort"           column="ssh_port"/>
+    <result property="sshProtocol"       column="ssh_protocol"/>
+    <result property="username"          column="username"/>
+    <result property="authType"          column="auth_type"/>
+    <result property="passwordCipher"    column="password_cipher"/>
+    <result property="privateKeyCipher"  column="private_key_cipher"/>
+    <result property="deptId"            column="dept_id"/>
+    <result property="status"            column="status"/>
+    <result property="lastTestAt"        column="last_test_at"/>
+    <result property="lastTestMsg"       column="last_test_msg"/>
+    <result property="remark"            column="remark"/>
+    <result property="createBy"          column="create_by"/>
+    <result property="createTime"        column="create_time"/>
+    <result property="updateBy"          column="update_by"/>
+    <result property="updateTime"        column="update_time"/>
+  </resultMap>
+
+  <sql id="Columns">h.host_id, h.host_name, h.ip, h.ssh_port, h.ssh_protocol, h.username, h.auth_type,
+    h.password_cipher, h.private_key_cipher, h.dept_id, h.status, h.last_test_at, h.last_test_msg,
+    h.remark, h.create_by, h.create_time, h.update_by, h.update_time</sql>
+
+  <select id="selectById" resultMap="BaseResult" parameterType="long">
+    SELECT <include refid="Columns"/> FROM ai_host h WHERE h.host_id = #{hostId}
+  </select>
+
+  <select id="selectList" resultMap="BaseResult" parameterType="com.ruoyi.system.ai.domain.AiHost">
+    SELECT <include refid="Columns"/> FROM ai_host h
+    <where>
+      <if test="hostName != null and hostName != ''">AND h.host_name LIKE concat('%', #{hostName}, '%')</if>
+      <if test="ip != null and ip != ''">AND h.ip LIKE concat('%', #{ip}, '%')</if>
+      <if test="status != null and status != ''">AND h.status = #{status}</if>
+      <if test="deptId != null">AND h.dept_id = #{deptId}</if>
+    </where>
+    ORDER BY h.host_id ASC
+  </select>
+
+  <!-- TODO Phase 3: ai_session 表创建后启用真实引用检查 -->
+  <select id="selectAllInUse" resultMap="BaseResult">
+    SELECT <include refid="Columns"/> FROM ai_host h WHERE 1 = 0
+  </select>
+
+  <insert id="insert" parameterType="com.ruoyi.system.ai.domain.AiHost" useGeneratedKeys="true" keyProperty="hostId">
+    INSERT INTO ai_host(host_name, ip, ssh_port, ssh_protocol, username, auth_type,
+      password_cipher, private_key_cipher, dept_id, status, remark, create_by, create_time)
+    VALUES(#{hostName}, #{ip}, #{sshPort}, #{sshProtocol}, #{username}, #{authType},
+      #{passwordCipher}, #{privateKeyCipher}, #{deptId}, #{status}, #{remark},
+      #{createBy}, NOW())
+  </insert>
+
+  <update id="updateById" parameterType="com.ruoyi.system.ai.domain.AiHost">
+    UPDATE ai_host
+    <set>
+      <if test="hostName != null">host_name = #{hostName},</if>
+      <if test="ip != null">ip = #{ip},</if>
+      <if test="sshPort != null">ssh_port = #{sshPort},</if>
+      <if test="sshProtocol != null">ssh_protocol = #{sshProtocol},</if>
+      <if test="username != null">username = #{username},</if>
+      <if test="authType != null">auth_type = #{authType},</if>
+      <if test="passwordCipher != null">password_cipher = #{passwordCipher},</if>
+      <if test="privateKeyCipher != null">private_key_cipher = #{privateKeyCipher},</if>
+      <if test="status != null">status = #{status},</if>
+      <if test="remark != null">remark = #{remark},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      update_time = NOW()
+    </set>
+    WHERE host_id = #{hostId}
+  </update>
+
+  <select id="countByDeptAndName" resultType="int">
+    SELECT COUNT(1) FROM ai_host WHERE dept_id = #{deptId} AND host_name = #{hostName}
+  </select>
+
+  <select id="selectBatchIds" resultMap="BaseResult">
+    SELECT <include refid="Columns"/> FROM ai_host h
+    WHERE h.host_id IN
+    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </select>
+
+  <select id="selectByHostName" resultMap="BaseResult" parameterType="string">
+    SELECT <include refid="Columns"/> FROM ai_host h WHERE h.host_name = #{hostName} LIMIT 1
+  </select>
+
+  <select id="selectReferencingHostIds" parameterType="long" resultType="long">
+    SELECT DISTINCT h.host_id FROM ai_host h
+    INNER JOIN ai_session s ON FIND_IN_SET(h.host_id, s.active_host_ids) > 0
+    WHERE s.last_active_at &gt; DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+      AND h.host_id IN
+      <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </select>
+
+  <delete id="deleteByIds" parameterType="long">
+    DELETE FROM ai_host WHERE host_id IN
+    <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </delete>
+</mapper>
