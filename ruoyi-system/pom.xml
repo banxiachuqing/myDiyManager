@@ -42,6 +42,26 @@
             <artifactId>ruoyi-quartz</artifactId>
         </dependency>
 
+        <!-- SSH 客户端（JSch） -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.55</version>
+        </dependency>
+
+        <!-- SseEmitter（仅 AI Chat SSE 端点用） -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <!-- 测试：JUnit 5 + Mockito（spring-boot-starter-test 提供） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

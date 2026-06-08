@@ -98,6 +98,12 @@ public class GlobalExceptionHandler
     {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',发生未知异常.", requestURI, e);
+        // SSE 流式请求：不再返回 AjaxResult（与 text/event-stream Content-Type 不兼容），
+        // 让 Controller 内部 try-catch 转 SSE error 帧
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("text/event-stream")) {
+            return null;
+        }
         return AjaxResult.error(e.getMessage());
     }
 

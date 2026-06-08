@@ -96,8 +96,8 @@ token:
   header: Authorization
   # 令牌密钥
   secret: abcdefghijklmnopqrstuvwxyz
-  # 令牌有效期（默认30分钟）
-  expireTime: 30
+  # 令牌有效期（默认30分钟）— 开发环境调大到 8 小时，避免 RuoYi 自动续期只续 Redis 不续 JWT 导致频繁掉线
+  expireTime: 480
 
 # MyBatis配置
 mybatis:
@@ -129,4 +129,18 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+# AI 模块配置（阶段 1：LLM 厂商管理）
+ai:
+  # AES-128 主密钥，必须是 16 字节；生产环境用环境变量 AI_CRYPTO_KEY 注入
+  crypto-key: ${AI_CRYPTO_KEY:0123456789abcdef}
+  chat:
+    default-timeout-sec: 60
+    max-tokens: 2048
+    temperature: 0.7
+  test:
+    # 测试连通是否消耗厂商额度（默认 false，listModels 不消耗）
+    consume-quota: false
+  # 高危命令关键词（逗号分隔）
+  high-risk-keywords: rm -rf /,chmod 777,dd of=/dev/,mkfs,shutdown,reboot,iptables -F,userdel,kill -9 1
 
