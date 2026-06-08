@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.ai.mapper.AiMessageMapper">
+  <resultMap id="BaseResult" type="com.ruoyi.system.ai.domain.AiMessage">
+    <id property="messageId" column="message_id"/>
+    <result property="sessionId" column="session_id"/>
+    <result property="role" column="role"/>
+    <result property="content" column="content"/>
+    <result property="vendorId" column="vendor_id"/>
+    <result property="status" column="status"/>
+    <result property="firstTokenMs" column="first_token_ms"/>
+    <result property="createTime" column="create_time"/>
+  </resultMap>
+  <sql id="Columns">message_id, session_id, role, content, vendor_id, status, first_token_ms, create_time</sql>
+  <insert id="insert" parameterType="com.ruoyi.system.ai.domain.AiMessage">
+    INSERT INTO ai_message(message_id, session_id, role, content, vendor_id, status, first_token_ms, create_time)
+    VALUES(#{messageId}, #{sessionId}, #{role}, #{content}, #{vendorId}, #{status}, #{firstTokenMs}, #{createTime})
+  </insert>
+  <select id="selectBySession" resultMap="BaseResult">
+    SELECT <include refid="Columns"/> FROM ai_message
+    WHERE session_id = #{sessionId} ORDER BY create_time ASC LIMIT #{limit}
+  </select>
+  <select id="selectById" resultMap="BaseResult" parameterType="string">SELECT <include refid="Columns"/> FROM ai_message WHERE message_id = #{messageId}</select>
+  <update id="updateStatus">UPDATE ai_message SET status = #{status} WHERE message_id = #{messageId}</update>
+  <update id="updateContentAndStatus">UPDATE ai_message SET content = #{content}, status = #{status} WHERE message_id = #{messageId}</update>
+  <delete id="deleteBySession">DELETE FROM ai_message WHERE session_id = #{sessionId}</delete>
+</mapper>

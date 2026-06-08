@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.ai.mapper.AiVendorMapper">
+  <resultMap id="BaseResult" type="com.ruoyi.system.ai.domain.AiVendor">
+    <id     property="vendorId"     column="vendor_id"/>
+    <result property="vendorName"   column="vendor_name"/>
+    <result property="baseUrl"      column="base_url"/>
+    <result property="apiKeyCipher" column="api_key_cipher"/>
+    <result property="apiKeyMask"   column="api_key_mask"/>
+    <result property="modelName"    column="model_name"/>
+    <result property="status"       column="status"/>
+    <result property="isDefault"    column="is_default"/>
+    <result property="timeoutSec"   column="timeout_sec"/>
+    <result property="maxTokens"    column="max_tokens"/>
+    <result property="temperature"  column="temperature"/>
+    <result property="lastTestAt"   column="last_test_at"/>
+    <result property="lastTestMsg"  column="last_test_msg"/>
+    <result property="remark"       column="remark"/>
+    <result property="createBy"     column="create_by"/>
+    <result property="createTime"   column="create_time"/>
+    <result property="updateBy"     column="update_by"/>
+    <result property="updateTime"   column="update_time"/>
+  </resultMap>
+
+  <sql id="Columns">v.vendor_id, v.vendor_name, v.base_url, v.api_key_cipher, v.api_key_mask, v.model_name,
+    v.status, v.is_default, v.timeout_sec, v.max_tokens, v.temperature,
+    v.last_test_at, v.last_test_msg, v.remark, v.create_by, v.create_time, v.update_by, v.update_time</sql>
+
+  <select id="selectById" resultMap="BaseResult" parameterType="long">
+    SELECT <include refid="Columns"/> FROM ai_vendor v WHERE v.vendor_id = #{vendorId}
+  </select>
+
+  <select id="selectList" resultMap="BaseResult" parameterType="com.ruoyi.system.ai.domain.AiVendor">
+    SELECT <include refid="Columns"/> FROM ai_vendor v
+    <where>
+      <if test="vendorName != null and vendorName != ''">AND v.vendor_name LIKE concat('%', #{vendorName}, '%')</if>
+      <if test="status != null and status != ''">AND v.status = #{status}</if>
+    </where>
+    ORDER BY v.is_default DESC, v.vendor_id ASC
+  </select>
+
+  <insert id="insert" parameterType="com.ruoyi.system.ai.domain.AiVendor" useGeneratedKeys="true" keyProperty="vendorId">
+    INSERT INTO ai_vendor(vendor_name, base_url, api_key_cipher, api_key_mask, model_name,
+      status, is_default, timeout_sec, max_tokens, temperature, remark, create_by, create_time)
+    VALUES(#{vendorName}, #{baseUrl}, #{apiKeyCipher}, #{apiKeyMask}, #{modelName},
+      #{status}, #{isDefault}, #{timeoutSec}, #{maxTokens}, #{temperature}, #{remark},
+      #{createBy}, NOW())
+  </insert>
+
+  <update id="updateById" parameterType="com.ruoyi.system.ai.domain.AiVendor">
+    UPDATE ai_vendor
+    <set>
+      <if test="vendorName != null">vendor_name = #{vendorName},</if>
+      <if test="baseUrl != null">base_url = #{baseUrl},</if>
+      <if test="apiKeyCipher != null">api_key_cipher = #{apiKeyCipher},</if>
+      <if test="apiKeyMask != null">api_key_mask = #{apiKeyMask},</if>
+      <if test="modelName != null">model_name = #{modelName},</if>
+      <if test="status != null">status = #{status},</if>
+      <if test="timeoutSec != null">timeout_sec = #{timeoutSec},</if>
+      <if test="maxTokens != null">max_tokens = #{maxTokens},</if>
+      <if test="temperature != null">temperature = #{temperature},</if>
+      <if test="remark != null">remark = #{remark},</if>
+      <if test="updateBy != null">update_by = #{updateBy},</if>
+      update_time = NOW()
+    </set>
+    WHERE vendor_id = #{vendorId}
+  </update>
+
+  <update id="clearAllDefault">UPDATE ai_vendor SET is_default = '0' WHERE is_default = '1'</update>
+  <update id="setDefault" parameterType="long">UPDATE ai_vendor SET is_default = '1' WHERE vendor_id = #{vendorId}</update>
+  <select id="selectDefault" resultMap="BaseResult">SELECT <include refid="Columns"/> FROM ai_vendor v WHERE v.is_default = '1' LIMIT 1</select>
+  <select id="countByName" parameterType="string" resultType="int">SELECT COUNT(1) FROM ai_vendor WHERE vendor_name = #{vendorName}</select>
+
+  <delete id="deleteByIds" parameterType="long">
+    DELETE FROM ai_vendor WHERE vendor_id IN
+    <foreach collection="array" item="id" open="(" separator="," close=")">#{id}</foreach>
+  </delete>
+</mapper>

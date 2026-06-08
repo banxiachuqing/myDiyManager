@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.ai.mapper.AiCommandMapper">
+  <resultMap id="BaseResult" type="com.ruoyi.system.ai.domain.AiCommand">
+    <id property="cmdId" column="cmd_id"/>
+    <result property="messageId" column="message_id"/>
+    <result property="cmdText" column="cmd_text"/>
+    <result property="targetHostIds" column="target_host_ids"/>
+    <result property="decision" column="decision"/>
+    <result property="decisionUser" column="decision_user"/>
+    <result property="decisionTime" column="decision_time"/>
+    <result property="cmdFingerprint" column="cmd_fingerprint"/>
+    <result property="isHighRisk" column="is_high_risk"/>
+    <result property="execStatus" column="exec_status"/>
+    <result property="execResult" column="exec_result"/>
+    <result property="execMs" column="exec_ms"/>
+    <result property="createTime" column="create_time"/>
+  </resultMap>
+  <sql id="Columns">cmd_id, message_id, cmd_text, target_host_ids, decision, decision_user, decision_time, cmd_fingerprint, is_high_risk, exec_status, exec_result, exec_ms, create_time</sql>
+  <insert id="insert" parameterType="com.ruoyi.system.ai.domain.AiCommand">
+    INSERT INTO ai_command(cmd_id, message_id, cmd_text, target_host_ids, decision, cmd_fingerprint, is_high_risk, exec_status, create_time)
+    VALUES(#{cmdId}, #{messageId}, #{cmdText}, #{targetHostIds}, #{decision}, #{cmdFingerprint}, #{isHighRisk}, #{execStatus}, #{createTime})
+  </insert>
+  <select id="selectById" resultMap="BaseResult" parameterType="string">SELECT <include refid="Columns"/> FROM ai_command WHERE cmd_id = #{cmdId}</select>
+  <select id="selectByMessageId" resultMap="BaseResult" parameterType="string">SELECT <include refid="Columns"/> FROM ai_command WHERE message_id = #{messageId}</select>
+  <update id="updateDecision" parameterType="map">
+    UPDATE ai_command SET decision = #{decision}, decision_user = #{user}, decision_time = NOW()
+    WHERE cmd_id = #{cmdId}
+  </update>
+  <update id="updateExecResult" parameterType="map">
+    UPDATE ai_command SET exec_status = #{execStatus}, exec_result = #{execResult}, exec_ms = #{execMs}
+    WHERE cmd_id = #{cmdId}
+  </update>
+  <delete id="deleteBySession" parameterType="string">DELETE FROM ai_command WHERE message_id IN (SELECT message_id FROM ai_message WHERE session_id = #{sessionId})</delete>
+</mapper>
