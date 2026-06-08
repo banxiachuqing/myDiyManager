@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>命令卡片三档按钮 Mockup</title>
+<link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css">
+<style>
+  body { margin: 0; padding: 40px; font-family: -apple-system, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 22px; color: #303133; margin: 0 0 8px 0; }
+  .subtitle { color: #606266; font-size: 14px; margin-bottom: 32px; }
+
+  .section { margin-bottom: 36px; }
+  .section h2 { font-size: 16px; color: #303133; margin: 0 0 12px 0; font-weight: 600; padding-bottom: 6px; border-bottom: 2px solid #409eff; display: inline-block; }
+
+  /* 状态 1：PENDING - 三档按钮可见 */
+  .command-card { background: #fff; border: 1px solid #ebeef5; border-left: 3px solid #409eff; border-radius: 4px; padding: 12px 14px; margin: 12px 0; max-width: 560px; }
+  .command-card.high-risk { border-left: 3px solid #f56c6c; }
+  .command-card.session-allowed { border-left: 3px solid #67c23a; background: #f0f9eb; }
+  .command-card.executing { border-left: 3px solid #e6a23c; }
+  .command-card.executed { border-left: 3px solid #909399; }
+  .command-card.rejected { border-left: 3px solid #c0c4cc; opacity: 0.7; }
+
+  .cmd-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .cmd-title { font-size: 13px; color: #606266; }
+  .cmd-id { color: #909399; font-size: 12px; font-family: monospace; }
+
+  .high-risk-warning { background: #fde2e2; color: #f56c6c; padding: 6px 10px; border-radius: 3px; font-size: 12px; margin-bottom: 8px; border: 1px solid #fbc4c4; }
+  .session-allowed-hint { background: #e1f3d8; color: #67c23a; padding: 6px 10px; border-radius: 3px; font-size: 12px; margin-bottom: 8px; border: 1px solid #c2e7b0; }
+
+  .cmd-target { color: #606266; font-size: 12px; margin-bottom: 6px; }
+  .cmd-target .el-tag { margin-right: 4px; }
+
+  .cmd-text { background: #f5f7fa; padding: 8px 12px; border-radius: 3px; font-family: "Menlo", "Monaco", monospace; font-size: 13px; color: #303133; margin: 6px 0; }
+  .command-card.high-risk .cmd-text { background: #fef0f0; }
+  .command-card.executing .cmd-text { background: #fdf6ec; }
+
+  .cmd-buttons { display: flex; gap: 8px; margin-top: 10px; }
+
+  .exec-status { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 12px; }
+  .status-pending { background: #ecf5ff; color: #409eff; }
+  .status-running { background: #fdf6ec; color: #e6a23c; }
+  .status-success { background: #f0f9eb; color: #67c23a; }
+  .status-partial { background: #fdf6ec; color: #e6a23c; }
+  .status-failed { background: #fef0f0; color: #f56c6c; }
+  .status-rejected { background: #f4f4f5; color: #909399; }
+
+  .exec-result { background: #f0f9eb; border: 1px solid #c2e7b0; border-radius: 4px; padding: 10px; margin-top: 8px; font-family: "Menlo", "Monaco", monospace; font-size: 12px; }
+  .exec-result.failed { background: #fef0f0; border-color: #fbc4c4; }
+  .exec-result pre { margin: 0; white-space: pre-wrap; color: #303133; }
+  .exec-result .host-line { color: #67c23a; margin-bottom: 4px; }
+  .exec-result .host-line.failed { color: #f56c6c; }
+  .exec-result .host-line.failed::before { content: "✕ "; }
+  .exec-result .host-line::before { content: "✓ "; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: #606266; margin-top: 8px; }
+  .legend .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>命令卡片 + 三档按钮 状态总览</h1>
+  <p class="subtitle">同一命令卡片在不同状态下的视觉表现。设计目标：状态一眼可辨；按钮层级清晰（主/主/次）；高危命令红色警示但不强制拦截。</p>
+
+  <!-- 状态 1：PENDING 三档 -->
+  <div class="section">
+    <h2>1. PENDING（待裁决）· 三档按钮可见</h2>
+    <div class="command-card">
+      <div class="cmd-header">
+        <span class="cmd-title">命令 #1 <span class="exec-status status-pending">待裁决</span></span>
+        <span class="cmd-id">cmdId=a1b2c3d4</span>
+      </div>
+      <div class="cmd-target">目标：<span class="el-tag el-tag--mini">prod-web-01</span><span class="el-tag el-tag--mini">prod-web-02</span><span class="el-tag el-tag--mini">prod-db-01</span></div>
+      <div class="cmd-text">df -h</div>
+      <div class="cmd-buttons">
+        <button class="el-button el-button--primary el-button--small">✓ 允许</button>
+        <button class="el-button el-button--success el-button--small">⏰ 本次会话内允许</button>
+        <button class="el-button el-button--danger el-button--small">✕ 拒绝</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态 2：PENDING 高危 -->
+  <div class="section">
+    <h2>2. PENDING + 高危命令 · 红色警示 + 三档按钮仍可点</h2>
+    <div class="command-card high-risk">
+      <div class="high-risk-warning">⚠️ 高危操作，请人工复核（命中关键词：rm -rf）</div>
+      <div class="cmd-header">
+        <span class="cmd-title">命令 #2 <span class="exec-status status-pending">待裁决</span> <span style="color: #f56c6c; font-size: 12px;">[高危]</span></span>
+        <span class="cmd-id">cmdId=e5f6g7h8</span>
+      </div>
+      <div class="cmd-target">目标：<span class="el-tag el-tag--mini">prod-web-01</span></div>
+      <div class="cmd-text">rm -rf /tmp/*.log.7d</div>
+      <div class="cmd-buttons">
+        <button class="el-button el-button--primary el-button--small">✓ 允许</button>
+        <button class="el-button el-button--success el-button--small">⏰ 本次会话内允许</button>
+        <button class="el-button el-button--danger el-button--small">✕ 拒绝</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态 3：会话内已允许 -->
+  <div class="section">
+    <h2>3. 同类命令 · 已在白名单 · 不再弹审</h2>
+    <div class="command-card session-allowed">
+      <div class="session-allowed-hint">✓ 本次会话内已允许 · 同类命令自动通过</div>
+      <div class="cmd-header">
+        <span class="cmd-title">命令 #3 <span class="exec-status status-pending">待裁决</span></span>
+        <span class="cmd-id">cmdId=i9j0k1l2</span>
+      </div>
+      <div class="cmd-target">目标：<span class="el-tag el-tag--mini">prod-web-01</span></div>
+      <div class="cmd-text">df -h /data</div>
+      <div class="cmd-buttons">
+        <button class="el-button el-button--small" disabled style="opacity: 0.5;">✓ 允许</button>
+        <button class="el-button el-button--small" disabled style="opacity: 0.5;">⏰ 本次会话内允许</button>
+        <button class="el-button el-button--small" disabled style="opacity: 0.5;">✕ 拒绝</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态 4：执行中 -->
+  <div class="section">
+    <h2>4. EXECUTING（执行中）· 三档按钮置灰 + 状态徽标</h2>
+    <div class="command-card executing">
+      <div class="cmd-header">
+        <span class="cmd-title">命令 #4 <span class="exec-status status-running">⏵ 执行中</span></span>
+        <span class="cmd-id">cmdId=m3n4o5p6</span>
+      </div>
+      <div class="cmd-target">目标：<span class="el-tag el-tag--mini">prod-web-01</span><span class="el-tag el-tag--mini">prod-web-02</span><span class="el-tag el-tag--mini">prod-db-01</span></div>
+      <div class="cmd-text">uptime</div>
+      <div class="cmd-buttons">
+        <button class="el-button el-button--small" disabled style="opacity: 0.5;">✓ 允许</button>
+        <button class="el-button el-button--small" disabled style="opacity: 0.5;">⏰ 本次会话内允许</button>
+        <button class="el-button el-button--small" disabled style="opacity: 0.5;">✕ 拒绝</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态 5：成功 / 部分成功 -->
+  <div class="section">
+    <h2>5. SUCCESS（多主机成功）· 结果回写到卡片下方</h2>
+    <div class="command-card executed">
+      <div class="cmd-header">
+        <span class="cmd-title">命令 #5 <span class="exec-status status-success">✓ 成功</span></span>
+        <span class="cmd-id">cmdId=q7r8s9t0</span>
+      </div>
+      <div class="cmd-target">目标：<span class="el-tag el-tag--mini">prod-web-01</span><span class="el-tag el-tag--mini">prod-web-02</span><span class="el-tag el-tag--mini">prod-db-01</span></div>
+      <div class="cmd-text">uptime</div>
+      <div class="exec-result">
+        <div class="host-line">prod-web-01 (exitcode=0, 312ms) — 14:32:01 up 45 days, load 0.12</div>
+        <div class="host-line">prod-web-02 (exitcode=0, 287ms) — 14:32:01 up 45 days, load 0.08</div>
+        <div class="host-line">prod-db-01 (exitcode=0, 401ms) — 14:32:01 up 90 days, load 0.34</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态 6：部分成功 -->
+  <div class="section">
+    <h2>6. PARTIAL（部分成功）</h2>
+    <div class="command-card executed">
+      <div class="cmd-header">
+        <span class="cmd-title">命令 #6 <span class="exec-status status-partial">⚠ 部分成功</span></span>
+        <span class="cmd-id">cmdId=u1v2w3x4</span>
+      </div>
+      <div class="cmd-target">目标：<span class="el-tag el-tag--mini">prod-web-01</span><span class="el-tag el-tag--mini">staging-app-01</span></div>
+      <div class="cmd-text">systemctl status nginx</div>
+      <div class="exec-result failed">
+        <div class="host-line">prod-web-01 (exitcode=0, 156ms)</div>
+        <pre>● nginx.service - The nginx HTTP and reverse proxy server
+   Active: active (running)</pre>
+        <div class="host-line failed">staging-app-01 (exitcode=1, 10001ms) — Connection refused</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态 7：已拒绝 -->
+  <div class="section">
+    <h2>7. REJECTED（已拒绝）· 卡片置灰，不执行</h2>
+    <div class="command-card rejected">
+      <div class="cmd-header">
+        <span class="cmd-title">命令 #7 <span class="exec-status status-rejected">已拒绝</span></span>
+        <span class="cmd-id">cmdId=y5z6a7b8</span>
+      </div>
+      <div class="cmd-target">目标：<span class="el-tag el-tag--mini">prod-web-01</span></div>
+      <div class="cmd-text">rm -rf /etc/nginx/*</div>
+      <div style="color: #909399; font-size: 12px; margin-top: 8px;">用户于 14:35:22 点击"拒绝" · 不执行</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>视觉约定图例</h2>
+    <div class="legend">
+      <div><span class="swatch" style="background: #409eff;"></span>普通命令（蓝色左边框）</div>
+      <div><span class="swatch" style="background: #f56c6c;"></span>高危命令（红色左边框 + 顶部警示）</div>
+      <div><span class="swatch" style="background: #67c23a;"></span>同类已允许（绿色背景）</div>
+      <div><span class="swatch" style="background: #e6a23c;"></span>执行中（黄色）</div>
+      <div><span class="swatch" style="background: #909399;"></span>已执行 / 已拒绝（灰色）</div>
+    </div>
+    <div style="margin-top: 16px; font-size: 13px; color: #606266; line-height: 1.8;">
+      <strong>按钮层级约定：</strong><br>
+      · "允许"（主按钮，蓝）—— 单次放行<br>
+      · "本次会话内允许"（主按钮，绿）—— 加入白名单<br>
+      · "拒绝"（次按钮，红）—— 显灰提示但仍可点
+    </div>
+  </div>
+</div>
+</body>
+</html>

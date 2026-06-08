@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>AI 助手主页 - 智能问答 Mockup</title>
+<link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css">
+<style>
+  body { margin: 0; font-family: -apple-system, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f0f2f5; }
+  .app-header { background: #fff; height: 56px; box-shadow: 0 1px 4px rgba(0,21,41,.08); display: flex; align-items: center; padding: 0 24px; }
+  .app-header h1 { font-size: 18px; margin: 0; color: #303133; }
+  .breadcrumb { color: #909399; font-size: 13px; margin-left: 16px; }
+  .page-tabs { background: #fff; padding: 0 24px; border-bottom: 1px solid #e4e7ed; }
+  .el-tabs__nav { display: flex; position: relative; }
+  .el-tabs__item { padding: 0 20px; height: 40px; line-height: 40px; font-size: 14px; color: #606266; cursor: pointer; }
+  .el-tabs__item.is-active { color: #409eff; font-weight: 500; }
+  .el-tabs__active-bar { position: absolute; bottom: 0; height: 2px; background: #409eff; }
+
+  /* 主体两栏 */
+  .main-layout { display: flex; height: calc(100vh - 100px); margin: 0; }
+  .session-sidebar { width: 260px; background: #fafbfc; border-right: 1px solid #e4e7ed; display: flex; flex-direction: column; }
+  .sidebar-header { padding: 12px 16px; border-bottom: 1px solid #ebeef5; }
+  .sidebar-header .el-button { width: 100%; }
+  .sidebar-list { flex: 1; overflow-y: auto; padding: 8px 0; }
+  .session-item { padding: 10px 16px; cursor: pointer; border-left: 3px solid transparent; display: flex; align-items: center; gap: 8px; }
+  .session-item:hover { background: #f0f2f5; }
+  .session-item.active { background: #ecf5ff; border-left-color: #409eff; }
+  .session-item .title { flex: 1; font-size: 14px; color: #303133; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .session-item .time { font-size: 12px; color: #909399; }
+  .session-item .delete { color: #c0c4cc; font-size: 14px; padding: 2px 6px; }
+
+  /* 右侧主区 */
+  .chat-main { flex: 1; display: flex; flex-direction: column; background: #fff; }
+  .toolbar { padding: 10px 20px; border-bottom: 1px solid #ebeef5; display: flex; align-items: center; gap: 8px; background: #fafbfc; }
+  .toolbar .el-tag { margin-right: 4px; }
+  .chat-area { flex: 1; overflow-y: auto; padding: 24px; background: #fff; }
+  .message { display: flex; margin-bottom: 16px; gap: 12px; }
+  .message.user { flex-direction: row-reverse; }
+  .avatar { width: 36px; height: 36px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; flex-shrink: 0; }
+  .avatar.user { background: #409eff; }
+  .avatar.ai { background: #67c23a; }
+  .avatar.system { background: #909399; }
+  .bubble { max-width: 70%; padding: 10px 14px; border-radius: 4px; font-size: 14px; line-height: 1.6; }
+  .message.user .bubble { background: #ecf5ff; color: #303133; }
+  .message.ai .bubble { background: #f0f9eb; color: #303133; }
+  .message.system .bubble { background: #f4f4f5; color: #606266; font-size: 13px; }
+  .input-area { border-top: 1px solid #e4e7ed; padding: 12px 20px; display: flex; gap: 8px; background: #fff; }
+  .input-area textarea { flex: 1; }
+  .stream-cursor { display: inline-block; width: 8px; height: 14px; background: #67c23a; animation: blink 1s infinite; vertical-align: middle; }
+  @keyframes blink { 0%,50%{opacity:1} 50.01%,100%{opacity:0} }
+</style>
+</head>
+<body>
+  <div class="app-header">
+    <h1>📋 RuoYi 后台管理</h1>
+    <span class="breadcrumb">/ 工具 / AI 助手</span>
+  </div>
+
+  <div class="page-tabs">
+    <div class="el-tabs__nav">
+      <div class="el-tabs__item is-active">智能问答</div>
+      <div class="el-tabs__item">主机运维</div>
+      <div class="el-tabs__active-bar" style="left: 0; width: 80px;"></div>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    <!-- 左侧：会话列表 -->
+    <aside class="session-sidebar">
+      <div class="sidebar-header">
+        <button class="el-button el-button--primary el-button--small">+ 新建会话</button>
+      </div>
+      <div class="sidebar-list">
+        <div class="session-item active">
+          <span style="color: #409eff;">💬</span>
+          <span class="title">巡检要点咨询</span>
+          <span class="time">14:35</span>
+        </div>
+        <div class="session-item">
+          <span style="color: #909399;">💬</span>
+          <span class="title">RuoYi 部署问题</span>
+          <span class="time">昨日</span>
+        </div>
+        <div class="session-item">
+          <span style="color: #909399;">💬</span>
+          <span class="title">MySQL 慢查询优化</span>
+          <span class="time">昨日</span>
+        </div>
+        <div class="session-item">
+          <span style="color: #909399;">💬</span>
+          <span class="title">值班交接规范</span>
+          <span class="time">周一</span>
+        </div>
+        <div class="session-item">
+          <span style="color: #909399;">💬</span>
+          <span class="title">JDK 升级到 17 的兼容性</span>
+          <span class="time">上周</span>
+        </div>
+        <div class="session-item">
+          <span style="color: #909399;">💬</span>
+          <span class="title">Nginx 反向代理配置</span>
+          <span class="time">上周</span>
+        </div>
+        <div class="session-item">
+          <span style="color: #909399;">💬</span>
+          <span class="title">备份策略建议</span>
+          <span class="time">11/15</span>
+        </div>
+        <div class="session-item">
+          <span style="color: #909399;">💬</span>
+          <span class="title">网络抖动排查思路</span>
+          <span class="time">11/14</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 右侧：主区 -->
+    <main class="chat-main">
+      <div class="toolbar">
+        <span style="color: #606266; font-size: 13px;">LLM 厂商：</span>
+        <span class="el-tag el-tag--info">DeepSeek (默认)</span>
+        <span class="el-tag el-tag--success">● 可用</span>
+        <span style="margin-left: auto; color: #409eff; font-size: 12px; cursor: pointer;">⚙ 管理 →</span>
+      </div>
+
+      <div class="chat-area">
+        <div class="message system">
+          <div class="avatar system">SYS</div>
+          <div class="bubble">欢迎使用 AI 助手。智能问答 Tab 支持自然语言提问。</div>
+        </div>
+        <div class="message user">
+          <div class="avatar user">U</div>
+          <div class="bubble">请介绍今晚的巡检要点</div>
+        </div>
+        <div class="message ai">
+          <div class="avatar ai">AI</div>
+          <div class="bubble">今晚的巡检要点包括：<br>1. 检查核心服务（nginx、mysql、redis）运行状态<br>2. 磁盘空间 ≥ 30% 空闲<br>3. CPU/内存负载 < 80%<br>4. 备份任务是否完成<span class="stream-cursor"></span></div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <textarea class="el-textarea__inner" rows="2" placeholder="请输入你的问题... (Ctrl+Enter 发送)" style="resize: none;"></textarea>
+        <button class="el-button el-button--primary">发送</button>
+        <button class="el-button">清空</button>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
